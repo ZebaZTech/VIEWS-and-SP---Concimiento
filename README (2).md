@@ -1,6 +1,6 @@
-# 💊 PharmaSys — Sistema de Gestión para Industria Farmacéutica
+#  PharmaSys — Sistema de Gestión para Industria Farmacéutica
 
-## 📋 Descripción General
+##  Descripción General
 
 **PharmaSys** es un sistema de base de datos diseñado para administrar las operaciones de un laboratorio farmacéutico. Permite gestionar principios activos, medicamentos, materias primas, lotes de producción y control de calidad, garantizando trazabilidad y cumplimiento normativo en cada etapa del proceso.
 
@@ -8,7 +8,7 @@ Este módulo implementa **Vistas (Views)** y **Procedimientos Almacenados (Store
 
 ---
 
-## 🗂️ Estructura del Repositorio
+##  Estructura del Repositorio
 
 ```
 VIEWS-and-SP---Concimiento/
@@ -20,7 +20,7 @@ VIEWS-and-SP---Concimiento/
 
 ---
 
-## ⚙️ Instrucciones de Uso
+##  Instrucciones de Uso
 
 ### Requisitos previos
 
@@ -47,9 +47,9 @@ VIEWS-and-SP---Concimiento/
 
 ---
 
-## 📌 Módulos Implementados
+##  Módulos Implementados
 
-### 🔍 Vistas (Views)
+###  Vistas (Views)
 
 | Vista | Descripción |
 |-------|-------------|
@@ -61,7 +61,7 @@ VIEWS-and-SP---Concimiento/
 
 ---
 
-### ⚙️ Procedimientos Almacenados (Stored Procedures)
+###  Procedimientos Almacenados (Stored Procedures)
 
 | Procedimiento | Descripción | Parámetros |
 |---------------|-------------|------------|
@@ -73,7 +73,7 @@ VIEWS-and-SP---Concimiento/
 
 ---
 
-## 🧪 Detalle de Cada Objeto
+##  Detalle de Cada Objeto
 
 ### Vistas
 
@@ -158,7 +158,7 @@ CALL ProgramarMantenimientoEquipos('EQ-001', '2024-05-01', 'revision general', '
 
 ---
 
-## 👤 Autor
+##  Autor
 
 | Campo | Detalle |
 |-------|---------|
