@@ -1,0 +1,786 @@
+-- Volcando estructura de base de datos para farmacia
+CREATE DATABASE IF NOT EXISTS `farmacia` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `farmacia`;
+
+-- Volcando estructura para tabla farmacia.calidad_equipo
+CREATE TABLE IF NOT EXISTS `calidad_equipo` (
+  `ID_analisis` int(11) NOT NULL,
+  `numero_serie` varchar(60) NOT NULL,
+  PRIMARY KEY (`ID_analisis`,`numero_serie`),
+  KEY `numero_serie` (`numero_serie`),
+  CONSTRAINT `calidad_equipo_ibfk_1` FOREIGN KEY (`ID_analisis`) REFERENCES `control_calidad` (`ID`),
+  CONSTRAINT `calidad_equipo_ibfk_2` FOREIGN KEY (`numero_serie`) REFERENCES `equipo` (`numero_serie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.calidad_equipo: ~10 rows (aproximadamente)
+INSERT INTO `calidad_equipo` (`ID_analisis`, `numero_serie`) VALUES
+	(1, 'EQ-002'),
+	(2, 'EQ-001'),
+	(3, 'EQ-010'),
+	(4, 'EQ-002'),
+	(5, 'EQ-004'),
+	(6, 'EQ-002'),
+	(7, 'EQ-010'),
+	(8, 'EQ-001'),
+	(9, 'EQ-002'),
+	(10, 'EQ-010');
+
+-- Volcando estructura para tabla farmacia.categoria_riesgo
+CREATE TABLE IF NOT EXISTS `categoria_riesgo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_categoria` varchar(60) NOT NULL,
+  `nivel_riesgo` tinyint(4) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.categoria_riesgo: ~10 rows (aproximadamente)
+INSERT INTO `categoria_riesgo` (`ID`, `nombre_categoria`, `nivel_riesgo`) VALUES
+	(1, 'Riesgo Bajo', 1),
+	(2, 'Riesgo Medio', 2),
+	(3, 'Riesgo Alto', 3),
+	(4, 'Riesgo Crítico', 4),
+	(5, 'Sin Riesgo', 1),
+	(6, 'Riesgo Moderado', 2),
+	(7, 'Riesgo Biológico', 3),
+	(8, 'Riesgo Químico', 3),
+	(9, 'Riesgo Radiactivo', 4),
+	(10, 'Riesgo Inflamable', 2);
+
+-- Volcando estructura para tabla farmacia.clasificacion_terapeutica
+CREATE TABLE IF NOT EXISTS `clasificacion_terapeutica` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_clasificacion` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.clasificacion_terapeutica: ~10 rows (aproximadamente)
+INSERT INTO `clasificacion_terapeutica` (`ID`, `nombre_clasificacion`, `descripcion`) VALUES
+	(1, 'Analgesico', 'Medicamentos para el alivio del dolor'),
+	(2, 'Antibiotico', 'Medicamento para combatir infecciones bacterianas'),
+	(3, 'Antiinflamatorio', 'Medicamento para reducir la inflamacion'),
+	(4, 'Antihipertensivo', 'Medicamento para controlar la presion arterial alta'),
+	(5, 'Antidiabético', 'Medicamentos para el control de la diabetes'),
+	(6, 'Antihistamínico', 'Medicamentos para tratar alergias'),
+	(7, 'Antifúngico', 'Medicamentos para combatir infecciones por hongos'),
+	(8, 'Broncodilatador', 'Medicamentos para el tratamiento del asma'),
+	(9, 'Antiácido', 'Medicamentos para tratar la acidez estomacal'),
+	(10, 'Vitaminas y Suplementos', 'Suplementos vitamínicos y minerales');
+
+-- Volcando estructura para tabla farmacia.cliente_mayorista
+CREATE TABLE IF NOT EXISTS `cliente_mayorista` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `razon_social` varchar(150) NOT NULL,
+  `licencia_sanitaria` varchar(60) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `persona_contacto` varchar(100) DEFAULT NULL,
+  `cond_almacenamiento` text DEFAULT NULL,
+  `cond_comerciales` text DEFAULT NULL,
+  `calificacion` varchar(2) DEFAULT 'C',
+  `activo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.cliente_mayorista: ~10 rows (aproximadamente)
+INSERT INTO `cliente_mayorista` (`ID`, `razon_social`, `licencia_sanitaria`, `direccion`, `telefono`, `correo`, `persona_contacto`, `cond_almacenamiento`, `cond_comerciales`, `calificacion`, `activo`) VALUES
+	(1, 'Droguería El Sol', 'LS-001', 'Calle 15 # 8-20, Bogotá', '3001112233', 'compras@elsol.com', 'Roberto Herrera', 'Temperatura ambiente 15-25°C', 'Pago a 30 días', 'A', 1),
+	(2, 'Farmacia Central S.A.', 'LS-002', 'Av. 30 # 12-45, Medellín', '3102223344', 'info@farmaciacentral.com', 'Gloria Ríos', 'Refrigeración disponible', 'Pago a 60 días', 'A', 1),
+	(3, 'Distribuidora Médica Norte', 'LS-003', 'Carrera 5 # 20-30, Barranquilla', '3203334455', 'ventas@medicanorte.com', 'Felipe Mora', 'Temperatura ambiente', 'Pago a 45 días', 'B', 1),
+	(4, 'Drogas La Rebaja', 'LS-004', 'Calle 80 # 15-10, Cali', '3154445566', 'pedidos@larebaja.com', 'Esperanza Cruz', 'Temperatura controlada', 'Pago a 30 días', 'A', 1),
+	(5, 'Farmacenter S.A.S.', 'LS-005', 'Av. 68 # 30-25, Bogotá', '3055556677', 'compras@farmacenter.com', 'Hernando Silva', 'Temperatura ambiente', 'Pago a 60 días', 'B', 1),
+	(6, 'Distribuciones Farma Sur', 'LS-006', 'Carrera 10 # 45-15, Pasto', '3186667788', 'info@farmasur.com', 'Patricia Muñoz', 'Temperatura ambiente 15-25°C', 'Pago a 45 días', 'B', 1),
+	(7, 'Medicamentos del Caribe', 'LS-007', 'Calle 72 # 20-40, Cartagena', '3007778899', 'ventas@medcaribe.com', 'Gustavo Peña', 'Refrigeración disponible', 'Pago a 30 días', 'A', 1),
+	(8, 'Droguería Popular', 'LS-008', 'Av. 15 # 10-30, Bucaramanga', '3118889900', 'compras@drogpopular.com', 'Claudia Reyes', 'Temperatura ambiente', 'Pago de contado', 'C', 1),
+	(9, 'Farmasalud Ltda.', 'LS-009', 'Carrera 25 # 35-20, Manizales', '3169990011', 'info@farmasalud.com', 'Bernardo Lagos', 'Temperatura controlada', 'Pago a 30 días', 'B', 1),
+	(10, 'Distribuidora Nacional Médica', 'LS-010', 'Calle 100 # 50-15, Bogotá', '3041001122', 'ventas@nacmedica.com', 'Viviana Ospina', 'Temperatura ambiente 15-25°C', 'Pago a 60 días', 'A', 1);
+
+-- Volcando estructura para tabla farmacia.control_calidad
+CREATE TABLE IF NOT EXISTS `control_calidad` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `numero_lote` varchar(40) NOT NULL,
+  `fecha_analisis` date NOT NULL,
+  `ID_tipo_prueba` int(11) NOT NULL,
+  `especificaciones` text DEFAULT NULL,
+  `resultados` text DEFAULT NULL,
+  `ID_analista` int(11) NOT NULL,
+  `conformidad` tinyint(1) DEFAULT NULL,
+  `certificado` varchar(100) DEFAULT NULL,
+  `observaciones` text DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `numero_lote` (`numero_lote`),
+  KEY `ID_tipo_prueba` (`ID_tipo_prueba`),
+  KEY `ID_analista` (`ID_analista`),
+  CONSTRAINT `control_calidad_ibfk_1` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`),
+  CONSTRAINT `control_calidad_ibfk_2` FOREIGN KEY (`ID_tipo_prueba`) REFERENCES `tipo_prueba` (`ID`),
+  CONSTRAINT `control_calidad_ibfk_3` FOREIGN KEY (`ID_analista`) REFERENCES `empleado` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.control_calidad: ~10 rows (aproximadamente)
+INSERT INTO `control_calidad` (`ID`, `numero_lote`, `fecha_analisis`, `ID_tipo_prueba`, `especificaciones`, `resultados`, `ID_analista`, `conformidad`, `certificado`, `observaciones`) VALUES
+	(1, 'LOTE-2024-001', '2024-02-05', 1, 'Peso 500mg +/- 5%', 'Peso promedio 502mg, dentro de especificaciones', 2, 1, 'CERT-001', 'Lote conforme'),
+	(2, 'LOTE-2024-001', '2024-02-10', 2, 'Pureza mínima 98.5%', 'Pureza 99.1%, dentro de especificaciones', 2, 1, 'CERT-002', 'Lote conforme'),
+	(3, 'LOTE-2024-002', '2024-02-15', 3, 'Ausencia de microorganismos', 'Sin crecimiento microbiano', 3, 1, 'CERT-003', 'Lote conforme'),
+	(4, 'LOTE-2024-002', '2024-02-20', 1, 'Peso 500mg +/- 5%', 'Peso promedio 498mg, dentro de especificaciones', 2, 1, 'CERT-004', 'Lote conforme'),
+	(5, 'LOTE-2024-003', '2024-02-25', 2, 'Pureza mínima 98.5%', 'Pureza 98.8%, dentro de especificaciones', 2, 1, 'CERT-005', 'Lote conforme'),
+	(6, 'LOTE-2024-004', '2024-03-01', 1, 'Peso 400mg +/- 5%', 'Peso promedio 401mg, dentro de especificaciones', 2, 1, 'CERT-006', 'Lote conforme'),
+	(7, 'LOTE-2024-005', '2024-03-05', 3, 'Ausencia de microorganismos', 'Sin crecimiento microbiano', 3, 1, 'CERT-007', 'Lote conforme'),
+	(8, 'LOTE-2024-006', '2024-03-10', 2, 'Pureza mínima 99%', 'Pureza 99.3%, dentro de especificaciones', 2, 1, 'CERT-008', 'Lote conforme'),
+	(9, 'LOTE-2024-007', '2024-03-15', 1, 'Peso 10mg +/- 5%', 'Peso promedio 10.1mg, dentro de especificaciones', 2, 1, 'CERT-009', 'Lote conforme'),
+	(10, 'LOTE-2024-008', '2024-03-20', 4, 'Color blanco, olor característico', 'Color y olor dentro de especificaciones', 3, 1, 'CERT-010', 'Lote conforme');
+
+-- Volcando estructura para tabla farmacia.empleado
+CREATE TABLE IF NOT EXISTS `empleado` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `cargo` varchar(80) DEFAULT NULL,
+  `especialidad` varchar(100) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT 1,
+  `fecha_ingreso` date DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.empleado: ~10 rows (aproximadamente)
+INSERT INTO `empleado` (`ID`, `nombre`, `apellido`, `cargo`, `especialidad`, `correo`, `activo`, `fecha_ingreso`) VALUES
+	(1, 'Carlos', 'Martínez', 'Jefe de Producción', 'Ingeniería Química', 'carlos.martinez@pharmasys.com', 1, '2018-03-15'),
+	(2, 'María', 'López', 'Analista de Calidad', 'Química Farmacéutica', 'maria.lopez@pharmasys.com', 1, '2019-06-20'),
+	(3, 'Juan', 'García', 'Técnico de Laboratorio', 'Microbiología', 'juan.garcia@pharmasys.com', 1, '2020-01-10'),
+	(4, 'Ana', 'Rodríguez', 'Directora Técnica', 'Farmacia', 'ana.rodriguez@pharmasys.com', 1, '2017-08-05'),
+	(5, 'Pedro', 'Sánchez', 'Operario de Producción', 'Tecnología Farmacéutica', 'pedro.sanchez@pharmasys.com', 1, '2021-02-28'),
+	(6, 'Laura', 'Torres', 'Analista de Estabilidad', 'Química Analítica', 'laura.torres@pharmasys.com', 1, '2019-11-15'),
+	(7, 'Diego', 'Vargas', 'Técnico de Equipos', 'Instrumentación', 'diego.vargas@pharmasys.com', 1, '2020-07-22'),
+	(8, 'Sandra', 'Díaz', 'Regente de Farmacia', 'Farmacia', 'sandra.diaz@pharmasys.com', 1, '2018-09-10'),
+	(9, 'Andrés', 'Gómez', 'Operario de Producción', 'Tecnología Farmacéutica', 'andres.gomez@pharmasys.com', 1, '2022-04-18'),
+	(10, 'Mónica', 'Castro', 'Coordinadora de Calidad', 'Química Farmacéutica', 'monica.castro@pharmasys.com', 1, '2019-03-25');
+
+-- Volcando estructura para tabla farmacia.equipo
+CREATE TABLE IF NOT EXISTS `equipo` (
+  `numero_serie` varchar(60) NOT NULL,
+  `ID_tipo_equipo` int(11) NOT NULL,
+  `marca` varchar(80) DEFAULT NULL,
+  `modelo` varchar(80) DEFAULT NULL,
+  `ubicacion` varchar(100) DEFAULT NULL,
+  `calibracion_requerida` tinyint(1) DEFAULT 0,
+  `fecha_ult_calibracion` date DEFAULT NULL,
+  `cualificacion` varchar(20) DEFAULT NULL,
+  `ID_estado` int(11) NOT NULL,
+  `observaciones` text DEFAULT NULL,
+  PRIMARY KEY (`numero_serie`),
+  KEY `ID_tipo_equipo` (`ID_tipo_equipo`),
+  KEY `ID_estado` (`ID_estado`),
+  CONSTRAINT `equipo_ibfk_1` FOREIGN KEY (`ID_tipo_equipo`) REFERENCES `tipo_equipo` (`ID`),
+  CONSTRAINT `equipo_ibfk_2` FOREIGN KEY (`ID_estado`) REFERENCES `estado_operativo` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.equipo: ~10 rows (aproximadamente)
+INSERT INTO `equipo` (`numero_serie`, `ID_tipo_equipo`, `marca`, `modelo`, `ubicacion`, `calibracion_requerida`, `fecha_ult_calibracion`, `cualificacion`, `ID_estado`, `observaciones`) VALUES
+	('EQ-001', 1, 'Shimadzu', 'UV-1800', 'Laboratorio Análisis', 1, '2024-01-15', 'IQ-OQ-PQ', 1, 'Calibración anual requerida'),
+	('EQ-002', 2, 'Mettler Toledo', 'XS205', 'Laboratorio Análisis', 1, '2024-02-10', 'IQ-OQ', 1, 'Calibración semestral requerida'),
+	('EQ-003', 3, 'Tuttnauer', '2540M', 'Área Estéril', 1, '2024-01-20', 'IQ-OQ-PQ', 1, 'Calibración trimestral requerida'),
+	('EQ-004', 4, 'Waters', 'Alliance', 'Laboratorio HPLC', 1, '2023-12-05', 'IQ-OQ-PQ', 1, 'Calibración anual requerida'),
+	('EQ-005', 5, 'Hanna', 'HI2020', 'Laboratorio Análisis', 1, '2024-03-01', 'IQ', 1, 'Calibración mensual requerida'),
+	('EQ-006', 6, 'IKA', 'R50', 'Área Producción', 0, NULL, 'N/A', 1, 'No requiere calibración'),
+	('EQ-007', 7, 'Korsch', 'XL100', 'Área Producción', 0, NULL, 'IQ-OQ', 1, 'No requiere calibración'),
+	('EQ-008', 8, 'Bosch', 'GKF700', 'Área Producción', 0, NULL, 'IQ-OQ', 1, 'No requiere calibración'),
+	('EQ-009', 9, 'Telstar', 'LyoBeta', 'Área Estéril', 1, '2023-11-30', 'IQ-OQ-PQ', 2, 'En mantenimiento programado'),
+	('EQ-010', 10, 'Olympus', 'CX23', 'Laboratorio Microbiología', 0, NULL, 'N/A', 1, 'No requiere calibración');
+
+-- Volcando estructura para tabla farmacia.estado_operativo
+CREATE TABLE IF NOT EXISTS `estado_operativo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_estado` varchar(60) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.estado_operativo: ~10 rows (aproximadamente)
+INSERT INTO `estado_operativo` (`ID`, `nombre_estado`) VALUES
+	(1, 'Operativo'),
+	(2, 'En Mantenimiento'),
+	(3, 'Fuera de Servicio'),
+	(4, 'En Calibración'),
+	(5, 'En Cuarentena'),
+	(6, 'Disponible'),
+	(7, 'Ocupado'),
+	(8, 'En Reparación'),
+	(9, 'Dado de Baja'),
+	(10, 'En Calificación');
+
+-- Volcando estructura para tabla farmacia.estudio_estabilidad
+CREATE TABLE IF NOT EXISTS `estudio_estabilidad` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_medicamento` int(11) NOT NULL,
+  `temperatura` decimal(5,2) DEFAULT NULL,
+  `humedad` decimal(5,2) DEFAULT NULL,
+  `conclusion_vida_util` text DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_medicamento` (`ID_medicamento`),
+  CONSTRAINT `estudio_estabilidad_ibfk_1` FOREIGN KEY (`ID_medicamento`) REFERENCES `medicamento` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.estudio_estabilidad: ~10 rows (aproximadamente)
+INSERT INTO `estudio_estabilidad` (`ID`, `ID_medicamento`, `temperatura`, `humedad`, `conclusion_vida_util`, `fecha_inicio`, `fecha_fin`) VALUES
+	(1, 1, 25.00, 60.00, 'Vida útil de 24 meses en condiciones normales de almacenamiento', '2024-01-01', '2024-12-31'),
+	(2, 2, 25.00, 60.00, 'Vida útil de 24 meses en condiciones controladas', '2024-01-15', '2024-12-15'),
+	(3, 3, 5.00, 45.00, 'Vida útil de 18 meses bajo refrigeración', '2024-02-01', '2024-11-30'),
+	(4, 4, 25.00, 60.00, 'Vida útil de 36 meses en condiciones normales', '2024-02-15', '2025-02-15'),
+	(5, 5, 25.00, 55.00, 'Vida útil de 24 meses en lugar seco', '2024-03-01', '2025-03-01'),
+	(6, 6, 25.00, 60.00, 'Vida útil de 24 meses en condiciones normales', '2024-03-10', '2025-03-10'),
+	(7, 7, 25.00, 60.00, 'Vida útil de 36 meses en condiciones controladas', '2024-01-20', '2025-01-20'),
+	(8, 8, 5.00, 45.00, NULL, '2024-02-05', '2024-12-05'),
+	(9, 9, 25.00, 55.00, NULL, '2024-03-15', '2025-03-15'),
+	(10, 10, 25.00, 60.00, 'Vida útil de 24 meses en condiciones normales', '2024-01-25', '2025-01-25');
+
+-- Volcando estructura para tabla farmacia.estudio_lote
+CREATE TABLE IF NOT EXISTS `estudio_lote` (
+  `ID_estudio` int(11) NOT NULL,
+  `numero_lote` varchar(40) NOT NULL,
+  PRIMARY KEY (`ID_estudio`,`numero_lote`),
+  KEY `numero_lote` (`numero_lote`),
+  CONSTRAINT `estudio_lote_ibfk_1` FOREIGN KEY (`ID_estudio`) REFERENCES `estudio_estabilidad` (`ID`),
+  CONSTRAINT `estudio_lote_ibfk_2` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.estudio_lote: ~10 rows (aproximadamente)
+INSERT INTO `estudio_lote` (`ID_estudio`, `numero_lote`) VALUES
+	(1, 'LOTE-2024-001'),
+	(1, 'LOTE-2024-002'),
+	(2, 'LOTE-2024-004'),
+	(3, 'LOTE-2024-005'),
+	(4, 'LOTE-2024-001'),
+	(5, 'LOTE-2024-007'),
+	(6, 'LOTE-2024-008'),
+	(7, 'LOTE-2024-009'),
+	(8, 'LOTE-2024-003'),
+	(9, 'LOTE-2024-006');
+
+-- Volcando estructura para tabla farmacia.forma_farmaceutica
+CREATE TABLE IF NOT EXISTS `forma_farmaceutica` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_forma` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.forma_farmaceutica: ~10 rows (aproximadamente)
+INSERT INTO `forma_farmaceutica` (`ID`, `nombre_forma`, `descripcion`) VALUES
+	(1, 'capsula', 'Forma sólida en cubierta de gelatina de administración oral'),
+	(2, 'inyectada', 'Forma líquida de administración parenteral'),
+	(3, 'tableta', 'Forma sólida comprimida de administración oral'),
+	(4, 'Crema', 'Forma semisólida de aplicación tópica'),
+	(5, 'solucion', 'Forma líquida homogénea de administración oral o tópica'),
+	(6, 'Suspensión', 'Forma líquida con partículas en suspensión de administración oral'),
+	(7, 'Supositorio', 'Forma sólida de administración rectal'),
+	(8, 'Parche', 'Forma de administración transdérmica'),
+	(9, 'jarabe', 'Forma líquida azucarada de administración oral'),
+	(10, 'Gotas', 'Forma líquida de administración en pequeñas dosis');
+
+-- Volcando estructura para tabla farmacia.lote_materia_prima
+CREATE TABLE IF NOT EXISTS `lote_materia_prima` (
+  `numero_lote` varchar(40) NOT NULL,
+  `ID_materia` int(11) NOT NULL,
+  `numero_lote_materia` varchar(60) DEFAULT NULL,
+  `cantidad_usada` decimal(12,3) NOT NULL,
+  `unidad` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`numero_lote`,`ID_materia`),
+  KEY `ID_materia` (`ID_materia`),
+  CONSTRAINT `lote_materia_prima_ibfk_1` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`),
+  CONSTRAINT `lote_materia_prima_ibfk_2` FOREIGN KEY (`ID_materia`) REFERENCES `materia_prima` (`ID`),
+  CONSTRAINT `lote_materia_prima_ibfk_3` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`),
+  CONSTRAINT `lote_materia_prima_ibfk_4` FOREIGN KEY (`ID_materia`) REFERENCES `materia_prima` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.lote_materia_prima: ~10 rows (aproximadamente)
+INSERT INTO `lote_materia_prima` (`numero_lote`, `ID_materia`, `numero_lote_materia`, `cantidad_usada`, `unidad`) VALUES
+	('LOTE-2024-001', 1, 'MP-2024-001', 25.000, 'kg'),
+	('LOTE-2024-001', 8, 'MP-2024-002', 10.000, 'kg'),
+	('LOTE-2024-002', 1, 'MP-2024-003', 22.500, 'kg'),
+	('LOTE-2024-003', 1, 'MP-2024-004', 25.000, 'kg'),
+	('LOTE-2024-004', 2, 'MP-2024-005', 15.000, 'kg'),
+	('LOTE-2024-005', 3, 'MP-2024-006', 10.000, 'kg'),
+	('LOTE-2024-006', 4, 'MP-2024-007', 20.000, 'kg'),
+	('LOTE-2024-007', 5, 'MP-2024-008', 17.500, 'kg'),
+	('LOTE-2024-008', 6, 'MP-2024-009', 30.000, 'kg'),
+	('LOTE-2024-009', 7, 'MP-2024-010', 22.500, 'kg');
+
+-- Volcando estructura para tabla farmacia.lote_personal
+CREATE TABLE IF NOT EXISTS `lote_personal` (
+  `numero_lote` varchar(40) NOT NULL,
+  `ID_empleado` int(11) NOT NULL,
+  `rol_produccion` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`numero_lote`,`ID_empleado`),
+  KEY `ID_empleado` (`ID_empleado`),
+  CONSTRAINT `lote_personal_ibfk_1` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`),
+  CONSTRAINT `lote_personal_ibfk_2` FOREIGN KEY (`ID_empleado`) REFERENCES `empleado` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.lote_personal: ~10 rows (aproximadamente)
+INSERT INTO `lote_personal` (`numero_lote`, `ID_empleado`, `rol_produccion`) VALUES
+	('LOTE-2024-001', 1, 'Jefe de Producción'),
+	('LOTE-2024-001', 5, 'Operario'),
+	('LOTE-2024-002', 1, 'Jefe de Producción'),
+	('LOTE-2024-002', 9, 'Operario'),
+	('LOTE-2024-003', 1, 'Jefe de Producción'),
+	('LOTE-2024-004', 1, 'Jefe de Producción'),
+	('LOTE-2024-005', 1, 'Jefe de Producción'),
+	('LOTE-2024-006', 1, 'Jefe de Producción'),
+	('LOTE-2024-007', 1, 'Jefe de Producción'),
+	('LOTE-2024-008', 1, 'Jefe de Producción');
+
+-- Volcando estructura para tabla farmacia.lote_produccion
+CREATE TABLE IF NOT EXISTS `lote_produccion` (
+  `numero_lote` varchar(40) NOT NULL,
+  `ID_medicamento` int(11) NOT NULL,
+  `ID_protocolo` int(11) DEFAULT NULL,
+  `fecha_fabricacion` date NOT NULL,
+  `cantidad_producida` int(11) NOT NULL,
+  `fecha_caducidad` date DEFAULT NULL,
+  `parametros_proceso` text DEFAULT NULL,
+  `estado_lote` varchar(20) DEFAULT 'En proceso',
+  `observaciones` text DEFAULT NULL,
+  PRIMARY KEY (`numero_lote`),
+  KEY `ID_medicamento` (`ID_medicamento`),
+  KEY `ID_protocolo` (`ID_protocolo`),
+  CONSTRAINT `lote_produccion_ibfk_1` FOREIGN KEY (`ID_medicamento`) REFERENCES `medicamento` (`ID`),
+  CONSTRAINT `lote_produccion_ibfk_2` FOREIGN KEY (`ID_protocolo`) REFERENCES `protocolo_fabricacion` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.lote_produccion: ~10 rows (aproximadamente)
+INSERT INTO `lote_produccion` (`numero_lote`, `ID_medicamento`, `ID_protocolo`, `fecha_fabricacion`, `cantidad_producida`, `fecha_caducidad`, `parametros_proceso`, `estado_lote`, `observaciones`) VALUES
+	('LOTE-2024-001', 1, 1, '2024-01-10', 5000, '2026-01-10', 'Temperatura 24°C, Humedad 48%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-002', 1, 1, '2024-02-15', 4500, '2026-02-15', 'Temperatura 25°C, Humedad 46%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-003', 1, 1, '2024-03-20', 5000, '2026-03-20', 'Temperatura 23°C, Humedad 50%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-004', 2, 2, '2024-01-25', 3000, '2026-01-25', 'Temperatura 25°C, Humedad 47%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-005', 3, 3, '2024-02-10', 2000, '2025-02-10', 'Temperatura 22°C, Humedad 42%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-006', 4, 4, '2024-02-28', 4000, '2026-02-28', 'Temperatura 24°C, Humedad 48%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-007', 5, 5, '2024-03-05', 3500, '2026-03-05', 'Temperatura 24°C, Humedad 49%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-008', 6, 6, '2024-01-18', 6000, '2026-01-18', 'Temperatura 25°C, Humedad 46%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-009', 7, 7, '2024-03-22', 4500, '2026-03-22', 'Temperatura 25°C, Humedad 47%', 'Liberado', 'Lote aprobado sin observaciones'),
+	('LOTE-2024-010', 8, 8, '2024-02-20', 2500, '2025-08-20', 'Temperatura 22°C, Humedad 41%', 'Liberado', 'Lote aprobado sin observaciones');
+
+CREATE TABLE IF NOT EXISTS `reporte_produccion` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_medicamento` int(11) NOT NULL,
+  `cantidad_producida` decimal(12,3) DEFAULT NULL,
+  `fecha_reporte` date DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=UTF8MB4_GENERAL_CI;
+
+-- Volcando estructura para tabla farmacia.mantenimiento_equipo
+CREATE TABLE IF NOT EXISTS `mantenimiento_equipo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `numero_serie` varchar(60) NOT NULL,
+  `fecha_programada` date NOT NULL,
+  `fecha_realizada` date DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `tecnico` varchar(100) DEFAULT NULL,
+  `resultado` varchar(20) DEFAULT 'Pendiente',
+  PRIMARY KEY (`ID`),
+  KEY `numero_serie` (`numero_serie`),
+  CONSTRAINT `mantenimiento_equipo_ibfk_1` FOREIGN KEY (`numero_serie`) REFERENCES `equipo` (`numero_serie`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.mantenimiento_equipo: ~10 rows (aproximadamente)
+INSERT INTO `mantenimiento_equipo` (`ID`, `numero_serie`, `fecha_programada`, `fecha_realizada`, `descripcion`, `tecnico`, `resultado`) VALUES
+	(1, 'EQ-001', '2024-01-20', '2024-01-20', 'Calibración anual espectrofotómetro', 'Diego Vargas', 'Realizado'),
+	(2, 'EQ-002', '2024-02-15', '2024-02-15', 'Calibración semestral balanza', 'Diego Vargas', 'Realizado'),
+	(3, 'EQ-003', '2024-01-25', '2024-01-25', 'Calibración trimestral autoclave', 'Diego Vargas', 'Realizado'),
+	(4, 'EQ-004', '2024-03-10', NULL, 'Calibración anual cromatógrafo', 'Diego Vargas', 'Pendiente'),
+	(5, 'EQ-005', '2024-03-05', '2024-03-05', 'Calibración mensual pH-metro', 'Diego Vargas', 'Realizado'),
+	(6, 'EQ-006', '2024-02-20', '2024-02-20', 'Mantenimiento preventivo mezclador', 'Diego Vargas', 'Realizado'),
+	(7, 'EQ-007', '2024-01-30', '2024-01-30', 'Mantenimiento preventivo tableteadora', 'Diego Vargas', 'Realizado'),
+	(8, 'EQ-008', '2024-03-15', NULL, 'Mantenimiento preventivo encapsuladora', 'Diego Vargas', 'Pendiente'),
+	(9, 'EQ-009', '2024-02-25', '2024-02-25', 'Mantenimiento correctivo liofilizador', 'Diego Vargas', 'Realizado'),
+	(10, 'EQ-010', '2024-03-20', NULL, 'Mantenimiento preventivo microscopio', 'Diego Vargas', 'Pendiente');
+
+-- Volcando estructura para tabla farmacia.materia_prima
+CREATE TABLE IF NOT EXISTS `materia_prima` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(150) NOT NULL,
+  `ID_tipo_materia` int(11) NOT NULL,
+  `especificaciones` text DEFAULT NULL,
+  `cert_analisis_requerido` tinyint(1) DEFAULT 1,
+  `cond_almacenamiento` text DEFAULT NULL,
+  `periodo_cuarentena` int(11) DEFAULT NULL,
+  `fecha_caducidad` date DEFAULT NULL,
+  `ID_categoria_riesgo` int(11) NOT NULL,
+  `stock_actual` decimal(12,3) DEFAULT 0.000,
+  `unidad_medida` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_tipo_materia` (`ID_tipo_materia`),
+  KEY `ID_categoria_riesgo` (`ID_categoria_riesgo`),
+  CONSTRAINT `materia_prima_ibfk_1` FOREIGN KEY (`ID_tipo_materia`) REFERENCES `tipo_materia` (`ID`),
+  CONSTRAINT `materia_prima_ibfk_2` FOREIGN KEY (`ID_categoria_riesgo`) REFERENCES `categoria_riesgo` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.materia_prima: ~10 rows (aproximadamente)
+INSERT INTO `materia_prima` (`ID`, `nombre`, `ID_tipo_materia`, `especificaciones`, `cert_analisis_requerido`, `cond_almacenamiento`, `periodo_cuarentena`, `fecha_caducidad`, `ID_categoria_riesgo`, `stock_actual`, `unidad_medida`) VALUES
+	(1, 'Paracetamol', 2, 'Pureza mínima 98.5%', 1, 'Lugar fresco y seco', 20, '2026-05-30', 2, 200.000, 'kg'),
+	(2, 'Ibuprofeno', 2, 'Pureza mínima 99%', 1, 'Lugar fresco y seco', 20, '2026-08-15', 2, 150.000, 'kg'),
+	(3, 'Amoxicilina', 2, 'Pureza mínima 98%', 1, 'Refrigeración 2-8°C', 30, '2025-12-20', 3, 80.000, 'kg'),
+	(4, 'Ácido Ascórbico', 2, 'Pureza mínima 99%', 1, 'Lugar fresco y seco', 15, '2026-03-01', 1, 50.000, 'kg'),
+	(5, 'Ácido Cítrico', 2, 'Grado farmacéutico', 1, 'Temperatura ambiente', 10, '2026-06-15', 1, 30.000, 'kg'),
+	(6, 'Cloruro de Sodio', 2, 'Pureza mínima 99.5%', 1, 'Lugar seco', 10, '2027-01-10', 2, 100.000, 'kg'),
+	(7, 'Cloruro de Potasio', 2, 'Grado farmacéutico', 1, 'Temperatura ambiente', 10, '2026-08-20', 2, 25.000, 'kg'),
+	(8, 'Almidón de Maíz', 1, 'Grado farmacéutico', 1, 'Lugar seco', 7, '2025-06-30', 1, 80.000, 'kg'),
+	(9, 'Estearato de Magnesio', 9, 'Pureza mínima 97%', 1, 'Temperatura ambiente', 7, '2025-09-15', 1, 15.000, 'kg'),
+	(10, 'Cloruro de Calcio', 2, 'Pureza mínima 98%', 1, 'Lugar seco y fresco', 10, '2026-11-30', 3, 10.000, 'kg');
+	
+ALTER TABLE `materia_prima` 
+ADD COLUMN `estado` VARCHAR(20) DEFAULT 'ACTIVO';
+
+-- Volcando estructura para tabla farmacia.medicamento
+CREATE TABLE IF NOT EXISTS `medicamento` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_comercial` varchar(150) NOT NULL,
+  `ID_forma` int(11) NOT NULL,
+  `presentacion` varchar(100) DEFAULT NULL,
+  `indicaciones` text DEFAULT NULL,
+  `contraindicaciones` text DEFAULT NULL,
+  `efectos_secundarios` text DEFAULT NULL,
+  `posologia` text DEFAULT NULL,
+  `registro_sanitario` varchar(60) DEFAULT NULL,
+  `fecha_aprobacion` date DEFAULT NULL,
+  `precio_sugerido` decimal(12,2) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID`),
+  KEY `ID_forma` (`ID_forma`),
+  CONSTRAINT `medicamento_ibfk_1` FOREIGN KEY (`ID_forma`) REFERENCES `forma_farmaceutica` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.medicamento: ~10 rows (aproximadamente)
+INSERT INTO `medicamento` (`ID`, `nombre_comercial`, `ID_forma`, `presentacion`, `indicaciones`, `contraindicaciones`, `efectos_secundarios`, `posologia`, `registro_sanitario`, `fecha_aprobacion`, `precio_sugerido`, `activo`) VALUES
+	(1, 'Dolex', 1, 'Caja x 10 tabletas', 'Dolor leve a moderado y fiebre', 'Insuficiencia hepática grave', 'Nauseas, reacciones alérgicas', '1 tableta cada 8 horas', 'RS-001', '2021-01-10', 15000.00, 1),
+	(2, 'Buscapina', 1, 'Caja x 20 tabletas', 'Dolor abdominal y cólicos', 'Glaucoma, obstrucción intestinal', 'Sequedad bucal, taquicardia', '1 tableta cada 6 horas', 'RS-002', '2021-02-15', 22000.00, 1),
+	(3, 'Amoxil', 2, 'Caja x 12 cápsulas', 'Infecciones bacterianas', 'Alergia a penicilinas', 'Diarrea, erupciones cutáneas', '1 cápsula cada 8 horas', 'RS-003', '2021-03-20', 35000.00, 1),
+	(4, 'Advil', 1, 'Caja x 10 tabletas', 'Dolor e inflamación', 'Úlcera gástrica, insuficiencia renal', 'Malestar gástrico, mareos', '1 tableta cada 8 horas', 'RS-004', '2021-04-25', 18000.00, 1),
+	(5, 'Clarityne', 1, 'Caja x 10 tabletas', 'Alergias y rinitis alérgica', 'Hipersensibilidad a loratadina', 'Somnolencia leve, cefalea', '1 tableta cada 24 horas', 'RS-005', '2021-05-30', 28000.00, 1),
+	(6, 'Glucophage', 1, 'Caja x 30 tabletas', 'Diabetes tipo 2', 'Insuficiencia renal, hepática', 'Nauseas, diarrea, vómito', '1 tableta cada 12 horas', 'RS-006', '2021-06-10', 45000.00, 1),
+	(7, 'Renitec', 1, 'Caja x 20 tabletas', 'Hipertensión arterial', 'Embarazo, hipersensibilidad', 'Tos seca, mareos, cefalea', '1 tableta cada 24 horas', 'RS-007', '2021-07-15', 32000.00, 1),
+	(8, 'Zitromax', 2, 'Caja x 6 cápsulas', 'Infecciones respiratorias y de piel', 'Hipersensibilidad a macrólidos', 'Nauseas, diarrea, dolor abdominal', '1 cápsula cada 24 horas', 'RS-008', '2021-08-20', 55000.00, 1),
+	(9, 'Omeprazol MK', 2, 'Caja x 14 cápsulas', 'Úlcera gástrica y reflujo', 'Hipersensibilidad al omeprazol', 'Cefalea, diarrea, nauseas', '1 cápsula cada 24 horas', 'RS-009', '2021-09-25', 25000.00, 1),
+	(10, 'Redoxon', 1, 'Caja x 10 tabletas', 'Deficiencia de vitamina C', 'Hipersensibilidad, cálculos renales', 'Malestar gástrico en dosis altas', '1 tableta cada 24 horas', 'RS-010', '2021-10-30', 12000.00, 1);
+
+-- Volcando estructura para tabla farmacia.medicamento_principio
+CREATE TABLE IF NOT EXISTS `medicamento_principio` (
+  `ID_medicamento` int(11) NOT NULL,
+  `ID_principio` int(11) NOT NULL,
+  `concentracion` varchar(50) DEFAULT NULL,
+  `unidad` varchar(20) DEFAULT NULL,
+  `es_principal` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`ID_medicamento`,`ID_principio`),
+  KEY `ID_principio` (`ID_principio`),
+  CONSTRAINT `medicamento_principio_ibfk_1` FOREIGN KEY (`ID_medicamento`) REFERENCES `medicamento` (`ID`),
+  CONSTRAINT `medicamento_principio_ibfk_2` FOREIGN KEY (`ID_principio`) REFERENCES `principio_activo` (`ID`),
+  CONSTRAINT `medicamento_principio_ibfk_3` FOREIGN KEY (`ID_medicamento`) REFERENCES `medicamento` (`ID`),
+  CONSTRAINT `medicamento_principio_ibfk_4` FOREIGN KEY (`ID_principio`) REFERENCES `principio_activo` (`ID`),
+  CONSTRAINT `medicamento_principio_ibfk_5` FOREIGN KEY (`ID_principio`) REFERENCES `principio_activo` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.medicamento_principio: ~10 rows (aproximadamente)
+INSERT INTO `medicamento_principio` (`ID_medicamento`, `ID_principio`, `concentracion`, `unidad`, `es_principal`) VALUES
+	(1, 1, '500', 'mg', 1),
+	(2, 2, '400', 'mg', 1),
+	(3, 3, '500', 'mg', 1),
+	(4, 4, '100', 'mg', 1),
+	(5, 5, '10', 'mg', 1),
+	(6, 6, '500', 'mg', 1),
+	(7, 7, '10', 'mg', 1),
+	(8, 8, '500', 'mg', 1),
+	(9, 9, '20', 'mg', 1),
+	(10, 10, '500', 'mg', 1);
+
+-- Volcando estructura para tabla farmacia.principio_activo
+CREATE TABLE IF NOT EXISTS `principio_activo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_cientifico` varchar(200) NOT NULL,
+  `formula_quimica` varchar(100) DEFAULT NULL,
+  `ID_clasificacion` int(11) NOT NULL,
+  `origen` varchar(30) NOT NULL,
+  `metodo_obtencion` text DEFAULT NULL,
+  `propiedades` text DEFAULT NULL,
+  `precauciones` text DEFAULT NULL,
+  `fecha_registro` date DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_clasificacion` (`ID_clasificacion`),
+  CONSTRAINT `principio_activo_ibfk_1` FOREIGN KEY (`ID_clasificacion`) REFERENCES `clasificacion_terapeutica` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.principio_activo: ~10 rows (aproximadamente)
+INSERT INTO `principio_activo` (`ID`, `nombre_cientifico`, `formula_quimica`, `ID_clasificacion`, `origen`, `metodo_obtencion`, `propiedades`, `precauciones`, `fecha_registro`) VALUES
+	(1, 'Paracetamol', 'C8H9NO2', 1, 'Sintético', 'Síntesis química', 'Analgésico y antipirético', 'Evitar sobredosis, puede causar daño hepático', '2020-01-15'),
+	(2, 'Ibuprofeno', 'C13H18O2', 3, 'Sintético', 'Síntesis química', 'Antiinflamatorio y analgésico', 'Evitar en pacientes con úlcera gástrica', '2020-02-10'),
+	(3, 'Amoxicilina', 'C16H19N3O5S', 2, 'Semisintético', 'Fermentación y síntesis', 'Antibiótico de amplio espectro', 'Verificar alergias a penicilina', '2020-03-05'),
+	(4, 'Ácido Acetilsalicílico', 'C9H8O4', 1, 'Sintético', 'Síntesis química', 'Analgésico y antiinflamatorio', 'Evitar en menores de 12 años', '2020-04-20'),
+	(5, 'Loratadina', 'C22H23ClN2O2', 6, 'Sintético', 'Síntesis química', 'Antihistamínico no sedante', 'Precaución en insuficiencia hepática', '2020-05-12'),
+	(6, 'Metformina', 'C4H11N5', 5, 'Sintético', 'Síntesis química', 'Antidiabético oral', 'Contraindicado en insuficiencia renal', '2020-06-18'),
+	(7, 'Enalapril', 'C20H28N2O5', 4, 'Sintético', 'Síntesis química', 'Antihipertensivo inhibidor ECA', 'Evitar en embarazo', '2020-07-22'),
+	(8, 'Azitromicina', 'C38H72N2O12', 2, 'Semisintético', 'Fermentación y síntesis', 'Antibiótico macrólido', 'Precaución en pacientes cardíacos', '2020-08-30'),
+	(9, 'Omeprazol', 'C17H19N3O3S', 9, 'Sintético', 'Síntesis química', 'Inhibidor de la bomba de protones', 'Evitar uso prolongado sin supervisión', '2020-09-14'),
+	(10, 'Vitamina C', 'C6H8O6', 10, 'Natural', 'Extracción y síntesis', 'Antioxidante y vitamina esencial', 'Dosis altas pueden causar cálculos renales', '2020-10-05');
+
+-- Volcando estructura para tabla farmacia.protocolo_equipo
+CREATE TABLE IF NOT EXISTS `protocolo_equipo` (
+  `ID_protocolo` int(11) NOT NULL,
+  `numero_serie` varchar(60) NOT NULL,
+  PRIMARY KEY (`ID_protocolo`,`numero_serie`),
+  KEY `numero_serie` (`numero_serie`),
+  CONSTRAINT `protocolo_equipo_ibfk_1` FOREIGN KEY (`ID_protocolo`) REFERENCES `protocolo_fabricacion` (`ID`),
+  CONSTRAINT `protocolo_equipo_ibfk_2` FOREIGN KEY (`numero_serie`) REFERENCES `equipo` (`numero_serie`),
+  CONSTRAINT `protocolo_equipo_ibfk_3` FOREIGN KEY (`ID_protocolo`) REFERENCES `protocolo_fabricacion` (`ID`),
+  CONSTRAINT `protocolo_equipo_ibfk_4` FOREIGN KEY (`numero_serie`) REFERENCES `equipo` (`numero_serie`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.protocolo_equipo: ~10 rows (aproximadamente)
+INSERT INTO `protocolo_equipo` (`ID_protocolo`, `numero_serie`) VALUES
+	(1, 'EQ-001'),
+	(1, 'EQ-002'),
+	(2, 'EQ-002'),
+	(2, 'EQ-006'),
+	(3, 'EQ-008'),
+	(4, 'EQ-002'),
+	(4, 'EQ-006'),
+	(5, 'EQ-001'),
+	(6, 'EQ-007'),
+	(7, 'EQ-007');
+
+-- Volcando estructura para tabla farmacia.protocolo_fabricacion
+CREATE TABLE IF NOT EXISTS `protocolo_fabricacion` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_medicamento` int(11) NOT NULL,
+  `version` varchar(20) DEFAULT '1.0',
+  `descripcion_etapas` text DEFAULT NULL,
+  `parametros_criticos` text DEFAULT NULL,
+  `puntos_control` text DEFAULT NULL,
+  `cond_ambientales` text DEFAULT NULL,
+  `validado` tinyint(1) DEFAULT 0,
+  `fecha_validacion` date DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID`),
+  KEY `ID_medicamento` (`ID_medicamento`),
+  CONSTRAINT `protocolo_fabricacion_ibfk_1` FOREIGN KEY (`ID_medicamento`) REFERENCES `medicamento` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.protocolo_fabricacion: ~10 rows (aproximadamente)
+INSERT INTO `protocolo_fabricacion` (`ID`, `ID_medicamento`, `version`, `descripcion_etapas`, `parametros_criticos`, `puntos_control`, `cond_ambientales`, `validado`, `fecha_validacion`, `vigente`) VALUES
+	(1, 1, '1.0', 'Pesaje, mezcla, granulación, compresión, recubrimiento', 'Temperatura 25°C, Humedad 45%', 'Control de peso, dureza y friabilidad', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-01-20', 1),
+	(2, 2, '1.0', 'Pesaje, mezcla, granulación, compresión', 'Temperatura 25°C, Humedad 50%', 'Control de peso y dureza', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-02-25', 1),
+	(3, 3, '1.0', 'Pesaje, mezcla, encapsulado, sellado', 'Temperatura 22°C, Humedad 40%', 'Control de peso y sellado', 'Temperatura 18-22°C, Humedad relativa 40-50%', 1, '2021-03-30', 1),
+	(4, 4, '1.0', 'Pesaje, mezcla, granulación, compresión', 'Temperatura 25°C, Humedad 45%', 'Control de peso y dureza', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-04-15', 1),
+	(5, 5, '1.0', 'Pesaje, mezcla, compresión, recubrimiento', 'Temperatura 24°C, Humedad 48%', 'Control de peso y recubrimiento', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-05-20', 1),
+	(6, 6, '1.0', 'Pesaje, mezcla, granulación, compresión', 'Temperatura 25°C, Humedad 45%', 'Control de peso y dureza', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-06-25', 1),
+	(7, 7, '1.0', 'Pesaje, mezcla, compresión, recubrimiento', 'Temperatura 25°C, Humedad 50%', 'Control de peso y recubrimiento', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-07-30', 1),
+	(8, 8, '1.0', 'Pesaje, mezcla, encapsulado, sellado', 'Temperatura 22°C, Humedad 40%', 'Control de peso y sellado', 'Temperatura 18-22°C, Humedad relativa 40-50%', 1, '2021-08-15', 1),
+	(9, 9, '1.0', 'Pesaje, mezcla, encapsulado, sellado', 'Temperatura 22°C, Humedad 42%', 'Control de peso y sellado', 'Temperatura 18-22°C, Humedad relativa 40-50%', 1, '2021-09-20', 1),
+	(10, 10, '1.0', 'Pesaje, mezcla, compresión, recubrimiento', 'Temperatura 24°C, Humedad 46%', 'Control de peso y recubrimiento', 'Temperatura 20-25°C, Humedad relativa 45-55%', 1, '2021-10-25', 1);
+
+-- Volcando estructura para tabla farmacia.proveedor
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `razon_social` varchar(150) NOT NULL,
+  `licencia` varchar(60) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `contacto` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.proveedor: ~20 rows (aproximadamente)
+INSERT INTO `proveedor` (`ID`, `razon_social`, `licencia`, `direccion`, `telefono`, `correo`, `contacto`, `activo`) VALUES
+	(1, 'Química Industrial S.A.', 'LIC-001', 'Calle 10 # 5-23, Bogotá', '3001234567', 'contacto@quimica.com', 'Juan Pérez', 1),
+	(2, 'Laboratorios BioFarma', 'LIC-002', 'Av. 30 # 15-40, Medellín', '3109876543', 'info@biofarma.com', 'María López', 1),
+	(3, 'Suministros Médicos S.A.S.', 'LIC-003', 'Carrera 7 # 20-15, Cali', '3207654321', 'ventas@suministros.com', 'Carlos Ruiz', 1),
+	(4, 'Materias Primas del Valle', 'LIC-004', 'Calle 50 # 8-30, Cali', '3156789012', 'info@mpvalle.com', 'Ana Gómez', 1),
+	(5, 'Distribuidora Farma Norte', 'LIC-005', 'Av. 15 # 25-10, Barranquilla', '3054321098', 'contacto@farmanorte.com', 'Pedro Martínez', 1),
+	(6, 'Química Orgánica Ltda.', 'LIC-006', 'Calle 80 # 12-45, Bogotá', '3183456789', 'info@quimicaorg.com', 'Laura Sánchez', 1),
+	(7, 'BioSíntesis Colombia', 'LIC-007', 'Carrera 43 # 10-20, Medellín', '3002345678', 'ventas@biosintesis.com', 'Diego Torres', 1),
+	(8, 'Insumos Farmacéuticos S.A.', 'LIC-008', 'Calle 25 # 30-15, Bogotá', '3118765432', 'info@insumofarma.com', 'Sandra Díaz', 1),
+	(9, 'Laboratorios Andinos', 'LIC-009', 'Av. 68 # 45-30, Bogotá', '3167890123', 'contacto@labandinos.com', 'Andrés Vargas', 1),
+	(10, 'Provifar S.A.S.', 'LIC-010', 'Carrera 15 # 60-25, Cali', '3041234567', 'info@provifar.com', 'Mónica Castro', 1),
+	(11, 'Química Industrial S.A.', 'LIC-001', 'Calle 10 # 5-23, Bogotá', '3001234567', 'contacto@quimica.com', 'Juan Pérez', 1),
+	(12, 'Laboratorios BioFarma', 'LIC-002', 'Av. 30 # 15-40, Medellín', '3109876543', 'info@biofarma.com', 'María López', 1),
+	(13, 'Suministros Médicos S.A.S.', 'LIC-003', 'Carrera 7 # 20-15, Cali', '3207654321', 'ventas@suministros.com', 'Carlos Ruiz', 1),
+	(14, 'Materias Primas del Valle', 'LIC-004', 'Calle 50 # 8-30, Cali', '3156789012', 'info@mpvalle.com', 'Ana Gómez', 1),
+	(15, 'Distribuidora Farma Norte', 'LIC-005', 'Av. 15 # 25-10, Barranquilla', '3054321098', 'contacto@farmanorte.com', 'Pedro Martínez', 1),
+	(16, 'Química Orgánica Ltda.', 'LIC-006', 'Calle 80 # 12-45, Bogotá', '3183456789', 'info@quimicaorg.com', 'Laura Sánchez', 1),
+	(17, 'BioSíntesis Colombia', 'LIC-007', 'Carrera 43 # 10-20, Medellín', '3002345678', 'ventas@biosintesis.com', 'Diego Torres', 1),
+	(18, 'Insumos Farmacéuticos S.A.', 'LIC-008', 'Calle 25 # 30-15, Bogotá', '3118765432', 'info@insumofarma.com', 'Sandra Díaz', 1),
+	(19, 'Laboratorios Andinos', 'LIC-009', 'Av. 68 # 45-30, Bogotá', '3167890123', 'contacto@labandinos.com', 'Andrés Vargas', 1),
+	(20, 'Provifar S.A.S.', 'LIC-010', 'Carrera 15 # 60-25, Cali', '3041234567', 'info@provifar.com', 'Mónica Castro', 1);
+
+-- Volcando estructura para tabla farmacia.proveedor_principio
+CREATE TABLE IF NOT EXISTS `proveedor_principio` (
+  `ID_principio` int(11) NOT NULL,
+  `ID_proveedor` int(11) NOT NULL,
+  `fecha_homologacion` date DEFAULT NULL,
+  `vigente` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID_principio`,`ID_proveedor`),
+  KEY `ID_proveedor` (`ID_proveedor`),
+  CONSTRAINT `proveedor_principio_ibfk_1` FOREIGN KEY (`ID_principio`) REFERENCES `principio_activo` (`ID`),
+  CONSTRAINT `proveedor_principio_ibfk_2` FOREIGN KEY (`ID_principio`) REFERENCES `principio_activo` (`ID`),
+  CONSTRAINT `proveedor_principio_ibfk_3` FOREIGN KEY (`ID_proveedor`) REFERENCES `proveedor` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.proveedor_principio: ~10 rows (aproximadamente)
+INSERT INTO `proveedor_principio` (`ID_principio`, `ID_proveedor`, `fecha_homologacion`, `vigente`) VALUES
+	(1, 1, '2021-01-15', 1),
+	(1, 2, '2021-02-20', 1),
+	(2, 3, '2021-03-10', 1),
+	(2, 4, '2021-04-15', 1),
+	(3, 5, '2021-05-20', 1),
+	(3, 6, '2021-06-25', 1),
+	(4, 7, '2021-07-30', 1),
+	(5, 8, '2021-08-15', 1),
+	(6, 9, '2021-09-20', 1),
+	(7, 10, '2021-10-25', 1);
+
+-- Volcando estructura para tabla farmacia.resultado_estabilidad
+CREATE TABLE IF NOT EXISTS `resultado_estabilidad` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_estudio` int(11) NOT NULL,
+  `periodo_analisis` varchar(40) DEFAULT NULL,
+  `parametros_evaluados` text DEFAULT NULL,
+  `resultados_periodo` text DEFAULT NULL,
+  `fecha_analisis` date DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `ID_estudio` (`ID_estudio`),
+  CONSTRAINT `resultado_estabilidad_ibfk_1` FOREIGN KEY (`ID_estudio`) REFERENCES `estudio_estabilidad` (`ID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.resultado_estabilidad: ~10 rows (aproximadamente)
+INSERT INTO `resultado_estabilidad` (`ID`, `ID_estudio`, `periodo_analisis`, `parametros_evaluados`, `resultados_periodo`, `fecha_analisis`) VALUES
+	(1, 1, '3 meses', 'Apariencia, dureza, friabilidad, valoración', 'Todos los parámetros dentro de especificaciones', '2024-04-01'),
+	(2, 1, '6 meses', 'Apariencia, dureza, friabilidad, valoración', 'Todos los parámetros dentro de especificaciones', '2024-07-01'),
+	(3, 2, '3 meses', 'Apariencia, dureza, valoración, impurezas', 'Todos los parámetros dentro de especificaciones', '2024-04-15'),
+	(4, 3, '3 meses', 'Apariencia, valoración, esterilidad', 'Todos los parámetros dentro de especificaciones', '2024-05-01'),
+	(5, 4, '3 meses', 'Apariencia, dureza, friabilidad, valoración', 'Todos los parámetros dentro de especificaciones', '2024-05-15'),
+	(6, 5, '3 meses', 'Apariencia, dureza, recubrimiento, valoración', 'Todos los parámetros dentro de especificaciones', '2024-06-01'),
+	(7, 6, '3 meses', 'Apariencia, dureza, valoración, impurezas', 'Todos los parámetros dentro de especificaciones', '2024-06-15'),
+	(8, 7, '3 meses', 'Apariencia, dureza, recubrimiento, valoración', 'Todos los parámetros dentro de especificaciones', '2024-07-15'),
+	(9, 8, '3 meses', 'Apariencia, valoración, esterilidad', 'Parámetros en evaluación', '2024-05-05'),
+	(10, 9, '3 meses', 'Apariencia, dureza, valoración, impurezas', 'Parámetros en evaluación', '2024-06-15');
+
+-- Volcando estructura para tabla farmacia.tipo_equipo
+CREATE TABLE IF NOT EXISTS `tipo_equipo` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_tipo` varchar(80) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.tipo_equipo: ~20 rows (aproximadamente)
+INSERT INTO `tipo_equipo` (`ID`, `nombre_tipo`) VALUES
+	(1, 'Espectrofotómetro'),
+	(2, 'Balanza Analítica'),
+	(3, 'Autoclave'),
+	(4, 'Cromatógrafo'),
+	(5, 'pH-metro'),
+	(6, 'Mezclador Industrial'),
+	(7, 'Tableteadora'),
+	(8, 'Encapsuladora'),
+	(9, 'Liofilizador'),
+	(10, 'Microscopio'),
+	(11, 'Espectrofotómetro'),
+	(12, 'Balanza Analítica'),
+	(13, 'Autoclave'),
+	(14, 'Cromatógrafo'),
+	(15, 'pH-metro'),
+	(16, 'Mezclador Industrial'),
+	(17, 'Tableteadora'),
+	(18, 'Encapsuladora'),
+	(19, 'Liofilizador'),
+	(20, 'Microscopio');
+
+-- Volcando estructura para tabla farmacia.tipo_materia
+CREATE TABLE IF NOT EXISTS `tipo_materia` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_tipo` varchar(80) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.tipo_materia: ~10 rows (aproximadamente)
+INSERT INTO `tipo_materia` (`ID`, `nombre_tipo`) VALUES
+	(1, 'Excipiente'),
+	(2, 'Principio Activo'),
+	(3, 'Solvente'),
+	(4, 'Conservante'),
+	(5, 'Colorante'),
+	(6, 'Saborizante'),
+	(7, 'Emulsificante'),
+	(8, 'Estabilizante'),
+	(9, 'Lubricante'),
+	(10, 'Desintegrante');
+
+-- Volcando estructura para tabla farmacia.tipo_operacion
+CREATE TABLE IF NOT EXISTS `tipo_operacion` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_operacion` varchar(60) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.tipo_operacion: ~5 rows (aproximadamente)
+INSERT INTO `tipo_operacion` (`ID`, `nombre_operacion`, `descripcion`) VALUES
+	(1, 'Fabricación', 'Proceso de elaboración del medicamento'),
+	(2, 'Análisis', 'Proceso de análisis y control de calidad'),
+	(3, 'Liberación', 'Liberación del lote para distribución'),
+	(4, 'Almacenamiento', 'Ingreso y ubicación en bodega'),
+	(5, 'Distribución', 'Envío del producto al cliente mayorista');
+
+-- Volcando estructura para tabla farmacia.tipo_prueba
+CREATE TABLE IF NOT EXISTS `tipo_prueba` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_prueba` varchar(50) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.tipo_prueba: ~10 rows (aproximadamente)
+INSERT INTO `tipo_prueba` (`ID`, `nombre_prueba`, `descripcion`) VALUES
+	(1, 'Física', 'Pruebas de características físicas como peso, dureza y friabilidad'),
+	(2, 'Química', 'Pruebas de composición química e identificación de principios activos'),
+	(3, 'Microbiológica', 'Pruebas de control de microorganismos y esterilidad'),
+	(4, 'Organoléptica', 'Pruebas de color, olor, sabor y apariencia visual'),
+	(5, 'Física', 'Pruebas de disolución y desintegración'),
+	(6, 'Química', 'Pruebas de valoración y pureza'),
+	(7, 'Microbiológica', 'Pruebas de endotoxinas bacterianas'),
+	(8, 'Organoléptica', 'Pruebas de uniformidad de contenido'),
+	(9, 'Física', 'Pruebas de humedad y densidad'),
+	(10, 'Química', 'Pruebas de estabilidad química acelerada');
+
+-- Volcando estructura para tabla farmacia.trazabilidad
+CREATE TABLE IF NOT EXISTS `trazabilidad` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `numero_lote` varchar(40) NOT NULL,
+  `fecha_operacion` datetime DEFAULT current_timestamp(),
+  `ID_tipo_operacion` int(11) NOT NULL,
+  `ubicacion` varchar(150) DEFAULT NULL,
+  `ID_responsable` int(11) NOT NULL,
+  `documentacion` varchar(200) DEFAULT NULL,
+  `observaciones` text DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `numero_lote` (`numero_lote`),
+  KEY `ID_tipo_operacion` (`ID_tipo_operacion`),
+  KEY `ID_responsable` (`ID_responsable`),
+  CONSTRAINT `trazabilidad_ibfk_1` FOREIGN KEY (`numero_lote`) REFERENCES `lote_produccion` (`numero_lote`),
+  CONSTRAINT `trazabilidad_ibfk_2` FOREIGN KEY (`ID_tipo_operacion`) REFERENCES `tipo_operacion` (`ID`),
+  CONSTRAINT `trazabilidad_ibfk_3` FOREIGN KEY (`ID_responsable`) REFERENCES `empleado` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Volcando datos para la tabla farmacia.trazabilidad: ~10 rows (aproximadamente)
+INSERT INTO `trazabilidad` (`ID`, `numero_lote`, `fecha_operacion`, `ID_tipo_operacion`, `ubicacion`, `ID_responsable`, `documentacion`, `observaciones`) VALUES
+	(1, 'LOTE-2024-001', '2024-01-10 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-001', 'Inicio de fabricación'),
+	(2, 'LOTE-2024-001', '2024-02-05 09:00:00', 2, 'Laboratorio Análisis', 2, 'ORD-ANL-001', 'Inicio de análisis'),
+	(3, 'LOTE-2024-001', '2024-02-12 10:00:00', 3, 'Área Liberación', 4, 'ORD-LIB-001', 'Lote liberado'),
+	(4, 'LOTE-2024-001', '2024-02-13 11:00:00', 4, 'Bodega Principal', 1, 'ORD-ALM-001', 'Ingreso a bodega'),
+	(5, 'LOTE-2024-002', '2024-02-15 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-002', 'Inicio de fabricación'),
+	(6, 'LOTE-2024-002', '2024-02-20 09:00:00', 2, 'Laboratorio Análisis', 2, 'ORD-ANL-002', 'Inicio de análisis'),
+	(7, 'LOTE-2024-003', '2024-03-20 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-003', 'Inicio de fabricación'),
+	(8, 'LOTE-2024-004', '2024-01-25 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-004', 'Inicio de fabricación'),
+	(9, 'LOTE-2024-005', '2024-02-10 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-005', 'Inicio de fabricación'),
+	(10, 'LOTE-2024-006', '2024-02-28 08:00:00', 1, 'Área Producción', 1, 'ORD-FAB-006', 'Inicio de fabricación');
